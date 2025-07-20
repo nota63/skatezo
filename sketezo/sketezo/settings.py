@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-kr*q^n7m_t%uk2j6oe=qv181!bg^d-#j_c5pk=!u3_=bx)i-lm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://skatezo.onrender.com']
 
 
 # Application definition
