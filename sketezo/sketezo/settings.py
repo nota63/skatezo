@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'sketezo.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 DATABASES = {
     'default': dj_database_url.parse(
-        "postgresql://skatezo_user:fpLQVX6utanwQBSN1eCNvGhbvlrT1L9A@dpg-d1ug8hre5dus73dn3to0-a.oregon-postgres.render.com/skatezo",
+        "postgresql://skatezo_user:fpLQVX6utanwQBSN1eCNvGhbvlrT1L9A@dpg-d1ug8hre5dus73dn3to0-a/skatezo",
         conn_max_age=600,
         ssl_require=True
     )
