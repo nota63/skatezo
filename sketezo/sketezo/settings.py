@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # development mode middleware
-    'dev_mode.middlewares.DevModeByHTTPS',
+    # 'dev_mode.middlewares.DevModeByHTTPS',
 ]
 
 ROOT_URLCONF = 'sketezo.urls'
