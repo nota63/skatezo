@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.conf import settings
 
 class DevModeByHTTPS:
@@ -6,16 +7,11 @@ class DevModeByHTTPS:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Check if request is HTTPS (i.e., you're in production)
         is_https = request.is_secure()
+        dev_path = reverse("sketezo_development")
 
-        # If in production (HTTPS), redirect to the dev notice page
-        if is_https:
-            # Allow access to the dev notice page itself
-            if request.path == '/dev_mode/sketezo_development/':
-                return self.get_response(request)
+        # If in production (HTTPS) and not visiting dev path, block access
+        if is_https and request.path != dev_path:
+            return redirect("sketezo_development")
 
-            return redirect('sketezo_development')
-
-        # Otherwise (local dev or HTTP), allow access
         return self.get_response(request)
