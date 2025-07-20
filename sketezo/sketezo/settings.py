@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,13 +76,14 @@ WSGI_APPLICATION = 'sketezo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        "postgresql://skatezo_user:fpLQVX6utanwQBSN1eCNvGhbvlrT1L9A@dpg-d1ug8hre5dus73dn3to0-a.oregon-postgres.render.com/skatezo",
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
 
 
 # Password validation
@@ -118,22 +120,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# URL to access static files
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-
-# Development: where to look for static files inside apps and the 'static' folder
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Your global static folder
-]
-
-# Production: where collectstatic will copy all static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Enable WhiteNoise storage for compressed and cached static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# For development, optionally still keep additional static dirs
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Media files (user uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
+# Extra production flags (recommended)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
