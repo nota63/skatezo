@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-kr*q^n7m_t%uk2j6oe=qv181!bg^d-#j_c5pk=!u3_=bx)i-lm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://skatezo.onrender.com']
-
+ALLOWED_HOSTS = [
+    'skatezo.onrender.com',
+    '127.0.0.1',
+    'localhost'
+]
 
 # Application definition
 
