@@ -1,317 +1,935 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Skatezo – Coming Soon</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skatezo - Mumbai's Premier Fashion Destination</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'slide-up': 'slideUp 0.8s ease-out',
-                        'fade-in': 'fadeIn 1s ease-out',
-                        'bounce-gentle': 'bounceGentle 2s infinite',
-                        'gradient': 'gradient 15s ease infinite',
-                        'slide-bg': 'slideBg 1s ease-in-out',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-20px)' }
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(50px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
-                        },
-                        bounceGentle: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' }
-                        },
-                        gradient: {
-                            '0%, 100%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' }
-                        },
-                        slideBg: {
-                            '0%': { opacity: '0', transform: 'scale(1.1)' },
-                            '100%': { opacity: '1', transform: 'scale(1)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="{% static 'home/homepage.css'%}">
+    <script src="{% static 'home/homepage.js'%}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-slider {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
-        .bg-slide {
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .category-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .category-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
             position: absolute;
-            top: 0;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
             left: 0;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
             width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
         }
         
-        .bg-slide.active {
-            opacity: 1;
+        .product-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
         
-        .overlay {
-            background: linear-gradient(135deg, 
-                rgba(0, 0, 0, 0.7) 0%, 
-                rgba(0, 0, 0, 0.5) 50%, 
-                rgba(0, 0, 0, 0.7) 100%);
-            backdrop-filter: blur(2px);
+        .product-card:hover {
+            transform: scale(1.02);
         }
         
-        .glass-effect {
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sale-banner {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
         
         .text-gradient {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .progress-bar {
-            background: linear-gradient(90deg, #f093fb, #f5576c, #4facfe);
-            background-size: 200% 200%;
-            animation: gradient 3s ease infinite;
-        }
-
-        .notification {
-            transform: translateX(400px);
-            transition: transform 0.5s ease-out;
+        .scroll-fade {
+            animation: fadeInUp 0.6s ease-out;
         }
         
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 12px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-height: 700px) {
-            .main-container {
-                padding: 1rem;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-            .main-container .glass-effect {
-                padding: 2rem;
-            }
-            .brand-logo {
-                width: 8rem;
-                height: 8rem;
-            }
-            .main-title {
-                font-size: 3rem;
-            }
-        }
-
-        @media (min-height: 900px) {
-            .brand-logo {
-                width: 12rem;
-                height: 12rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
 </head>
-<body class="min-h-screen relative overflow-hidden">
-    <!-- Background Slider -->
-    <div class="bg-slider">
-        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2000&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=2000&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=2000&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=2000&q=80')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2000&q=80')"></div>
-    </div>
-    
-    <!-- Overlay -->
-    <div class="overlay absolute inset-0"></div>
-    
-    <!-- Floating Background Elements -->
-    <div class="absolute top-10 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse-slow"></div>
-    <div class="absolute bottom-10 right-10 w-16 h-16 bg-pink-400 bg-opacity-20 rotate-45 animate-bounce-gentle"></div>
-    <div class="absolute top-1/2 left-8 w-12 h-12 bg-blue-400 bg-opacity-20 rounded-lg animate-float"></div>
-    
-    <!-- Main Container -->
-    <div class="main-container min-h-screen flex items-center justify-center p-4 sm:p-6 relative z-10">
-        <div class="glass-effect rounded-3xl max-w-5xl w-full p-6 sm:p-8 lg:p-12 text-center shadow-2xl animate-slide-up">
-            
-            <!-- Brand Logo -->
-            <div class="flex justify-center mb-6 lg:mb-8 animate-fade-in" style="animation-delay: 0.2s">
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-400 rounded-full animate-pulse-slow opacity-75 blur-sm"></div>
-                    <img src="{% static 'brand/images/skatezo.jpeg' %}" alt="Skatezo Logo" 
-                         class="brand-logo relative w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full shadow-2xl border-4 border-white object-cover" />
-                    <div class="absolute -top-2 -right-2 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center animate-bounce-gentle shadow-lg">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                </div>
+<body class="bg-gray-900 text-white">
+    <!-- Promotional Banner -->
+     <div class="sale-banner text-center py-3 px-4 text-white font-semibold overflow-hidden">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <button class="text-white/70 hover:text-white transition-colors" onclick="previousBanner()">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="flex-1 overflow-hidden">
+                <span class="scrolling-text inline-block text-sm md:text-base whitespace-nowrap">
+                    Just Dropped: Mumbai Streetwear • 2 New Skatezo Exclusive Collections • Free Shipping on Orders ₹2999+
+                </span>
             </div>
-            
-            <!-- Brand Name & Description -->
-            <div class="animate-fade-in mb-6 lg:mb-8" style="animation-delay: 0.4s">
-                <h1 class="main-title text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-2 lg:mb-4 tracking-tight">
-                    <span class="text-gradient">Skatezo</span>
-                </h1>
-                <p class="text-lg sm:text-xl lg:text-2xl text-white mb-2 font-light">Mumbai's Premium Fashion Destination</p>
-                <div class="flex justify-center items-center gap-2 text-white text-sm sm:text-base lg:text-lg">
-                    <svg class="w-5 h-5 text-yellow-400 animate-bounce-gentle" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                    </svg>
-                    <span>Where Style Meets Innovation</span>
-                    <svg class="w-5 h-5 text-yellow-400 animate-bounce-gentle" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- Status Card -->
-            <div class="glass-effect rounded-2xl p-4 sm:p-6 lg:p-8 mb-6 lg:mb-8 animate-fade-in" style="animation-delay: 0.6s">
-                <div class="flex items-center justify-center mb-4">
-                    <div class="w-3 h-3 bg-orange-400 rounded-full animate-pulse mr-3"></div>
-                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-orange-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    <span class="text-lg sm:text-xl lg:text-2xl font-bold text-white">Development in Progress</span>
-                </div>
-                <p class="text-white text-sm sm:text-base lg:text-lg mb-4 lg:mb-6 leading-relaxed">
-                    Our team is crafting something extraordinary. We're building the future of fashion retail with cutting-edge technology and premium user experience.
-                </p>
-                
-                <!-- Progress Bar -->
-                <div class="w-full bg-white bg-opacity-20 rounded-full h-4 lg:h-6 mb-3 lg:mb-4 overflow-hidden">
-                    <div class="progress-bar h-full rounded-full flex items-center justify-end pr-2 lg:pr-4 text-white font-bold text-xs lg:text-sm transition-all duration-1000 ease-out" style="width: 15%">
-                        3%
-                    </div>
-                </div>
-                <p class="text-white text-xs sm:text-sm opacity-90">Platform Architecture & Design Systems Complete</p>
-            </div>
-            
-            <!-- Feature Preview Cards -->
-        
-            
-            <!-- Call to Action -->
-            <div class="animate-fade-in" style="animation-delay: 1s">
-                <div class="glass-effect rounded-2xl p-4 lg:p-6 mb-4 lg:mb-6">
-                    <h3 class="text-white text-lg lg:text-xl font-bold mb-2 lg:mb-3">Be the first to know when we launch!</h3>
-                    <div class="flex justify-center items-center gap-2 lg:gap-4 text-white">
-                        <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-sm lg:text-lg">Early access notifications coming soon</span>
-                        <svg class="w-5 h-5 lg:w-6 lg:h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 000 1.788l4 2.058V13.5l-3 1.5v2zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788L9.553 8.658a1 1 0 00.894 0l4.764-2.382zM5.553 9.776a1 1 0 00-.894 0L1 11.658V18a1 1 0 001.447.894l4-2A1 1 0 007 15V9.776z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Footer -->
-            <div class="text-center animate-fade-in" style="animation-delay: 1.2s">
-                <p class="text-white text-xs sm:text-sm opacity-75 mb-1 lg:mb-2">
-                    Built with passion by Team Skatezo ❤️
-                </p>
-                <p class="text-white text-xs opacity-60">
-                    © 2025 Skatezo. Something amazing is coming.
-                </p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Notification Popup -->
-    <div id="notification" class="notification fixed top-4 lg:top-8 right-4 lg:right-8 glass-effect rounded-2xl p-4 lg:p-6 max-w-sm z-50 shadow-2xl">
-        <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center">
-                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse mr-2"></div>
-                <span class="text-white font-bold text-sm">Development Update</span>
-            </div>
-            <button onclick="hideNotification()" class="text-white hover:text-gray-300 transition-colors text-lg">&times;</button>
-        </div>
-        <p class="text-white text-sm mb-3">Our development team is working around the clock to bring you the best fashion platform.</p>
-        <div class="flex items-center text-white text-xs opacity-75">
-            <svg class="w-4 h-4 mr-2 animate-bounce-gentle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span>Estimated launch: Q2 2025</span>
+            <button class="bg-white/20 px-4 py-1 rounded-full text-xs uppercase tracking-wide hover:bg-white/30 transition-all duration-300 hover:scale-105">
+                Shop Now
+            </button>
+            <button class="text-white/70 hover:text-white transition-colors ml-4" onclick="nextBanner()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        // Background slider
-        const slides = document.querySelectorAll('.bg-slide');
-        let currentSlide = 0;
+    <!-- Navigation -->
+    <nav class="nav-backdrop sticky top-0 z-50 border-b border-gray-700/50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+  <!-- Circular Logo -->
+  <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer overflow-hidden">
+    <img src="{% static 'brand/images/skatezo.jpeg' %}" alt="SKATEZO Logo" class="w-full h-full object-cover" />
+  </div>
+
+  <!-- Brand Name in White -->
+  <h1 class="text-2xl font-bold text-white cursor-pointer hover:scale-105 transition-transform">
+    SKATEZO
+  </h1>
+</div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-1">
+                    <!-- New Dropdown -->
+                    <div class="nav-item relative group">
+                        <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2 flex items-center">
+                            New
+                            <i class="fas fa-chevron-down ml-1 text-xs transform group-hover:rotate-180 transition-transform"></i>
+                        </a>
+                        <div class="dropdown absolute top-full left-0 mt-1 w-80 mega-menu rounded-xl p-6">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Latest Drops</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Mumbai Street Collection</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Neon Nights Series</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Vintage Remix</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Limited Edition Tees</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">This Week</h3>
+                              <div class="product-preview bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors cursor-pointer">
+                                    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80"
+                                        alt="Mumbai Streetwear Hoodie"
+                                        class="w-full h-20 object-cover rounded mb-2" />
+                                    <p class="text-xs text-gray-300">Mumbai Vibes Hoodie</p>
+                                    <p class="text-sm font-semibold">₹2,499</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Women's Dropdown -->
+                    <div class="nav-item relative group">
+                        <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2 flex items-center">
+                            Women's
+                            <i class="fas fa-chevron-down ml-1 text-xs transform group-hover:rotate-180 transition-transform"></i>
+                        </a>
+                        <div class="dropdown absolute top-full left-0 mt-1 w-96 mega-menu rounded-xl p-6">
+                            <div class="grid grid-cols-3 gap-6">
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Clothing</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Hoodies & Sweatshirts</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">T-Shirts & Tops</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Dresses</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Pants & Joggers</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Jackets & Coats</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Footwear</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Sneakers</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Boots</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Sandals</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Slippers</a></li>
+                                    </ul>
+                                    <h3 class="text-white font-semibold mb-3 mt-6 text-sm uppercase tracking-wide">Accessories</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Bags</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Jewelry</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Featured</h3>
+                                    <div class="product-preview bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors cursor-pointer">
+                                        <img
+                                            src="https://plus.unsplash.com/premium_photo-1726862593926-e6b5ad91f429?q=80&w=388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                            alt="Streetwear Crop Top"
+                                            class="w-full h-20 object-cover rounded mb-2"
+                                        />
+                                        <p class="text-xs text-gray-300">Neon Dreams Crop Top</p>
+                                        <p class="text-sm font-semibold text-white">₹1,299</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Men's Dropdown -->
+                    <div class="nav-item relative group">
+                        <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2 flex items-center">
+                            Men's
+                            <i class="fas fa-chevron-down ml-1 text-xs transform group-hover:rotate-180 transition-transform"></i>
+                        </a>
+                        <div class="dropdown absolute top-full left-0 mt-1 w-96 mega-menu rounded-xl p-6">
+                            <div class="grid grid-cols-3 gap-6">
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Clothing</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Hoodies & Sweatshirts</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">T-Shirts & Tanks</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Shirts</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Pants & Joggers</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Shorts</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Jackets</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Footwear</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Sneakers</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Skate Shoes</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Boots</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Sandals</a></li>
+                                    </ul>
+                                    <h3 class="text-white font-semibold mb-3 mt-6 text-sm uppercase tracking-wide">Accessories</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Caps & Hats</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Backpacks</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Watches</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Trending</h3>
+                                  <div class="product-preview bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors cursor-pointer">
+                                    <img src="https://plus.unsplash.com/premium_photo-1705883268316-e7270ceaffcf?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        alt="Street King Hoodie"
+                                        class="w-full h-20 object-cover rounded mb-2" />
+                                    <p class="text-xs text-gray-300">Street King Hoodie</p>
+                                    <p class="text-sm font-semibold">₹2,899</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Streetwear Mega Menu -->
+                    <div class="nav-item relative group">
+                        <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2 flex items-center">
+                            Streetwear
+                            <i class="fas fa-chevron-down ml-1 text-xs transform group-hover:rotate-180 transition-transform"></i>
+                        </a>
+                        <div class="dropdown absolute top-full left-0 mt-1 w-[600px] mega-menu rounded-xl p-6">
+                            <div class="grid grid-cols-4 gap-6">
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Collections</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Mumbai Streets</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Underground Culture</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Neon Nights</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Retro Vibes</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Graffiti Art</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Categories</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Oversized Tees</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Hoodies</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Track Pants</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Bomber Jackets</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Cargo Pants</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Brands</h3>
+                                    <ul class="space-y-2">
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Skatezo Originals</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Urban Legends</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Street Kings</a></li>
+                                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">Rebel Republic</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wide">Hot This Week</h3>
+                                    <div class="space-y-3">
+                                       <div class="product-preview bg-gray-800 rounded-lg p-2 hover:bg-gray-700 transition-colors cursor-pointer">
+                                        <img src="https://images.unsplash.com/photo-1710165055566-89552d8a4754?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                            alt="Graffiti Hoodie"
+                                            class="w-full h-16 object-cover rounded mb-1" />
+                                        <p class="text-xs text-gray-300">Graffiti Hoodie</p>
+                                        <p class="text-xs font-semibold">₹2,999</p>
+                                        </div>
+
+                                        <div class="product-preview bg-gray-800 rounded-lg p-2 hover:bg-gray-700 transition-colors cursor-pointer">
+                                            <img src="https://plus.unsplash.com/premium_photo-1673356302067-aac3b545a362?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                                            <p class="text-xs text-gray-300">Urban Cargo</p>
+                                            <p class="text-xs font-semibold">₹3,499</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simple Links -->
+                    <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2">Accessories</a>
+                    <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2">Home</a>
+                    <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2">Music</a>
+                    <a href="#" class="nav-link text-gray-300 hover:text-white px-4 py-2">Vintage</a>
+                    
+                    <!-- Sale Link with Special Styling -->
+                    <a href="#" class="nav-link text-orange-400 hover:text-orange-300 px-4 py-2 font-semibold relative">
+                        Sale
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full animate-pulse">50%</span>
+                    </a>
+                </div>
+
+                <!-- Right Side Icons -->
+                <div class="flex items-center space-x-6">
+                    <!-- Enhanced Search Bar -->
+                    <div class="hidden md:block search-container relative">
+                        <input 
+                            type="text" 
+                            placeholder="What are you looking for?" 
+                            class="bg-gray-700/50 border border-gray-600 rounded-full px-4 py-2 pl-10 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm transition-all duration-300 focus:w-72"
+                            onFocus="showSearchSuggestions()"
+                        >
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        
+                        <!-- Search Suggestions -->
+                        <div class="search-suggestions absolute top-full left-0 mt-2 w-full bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-50">
+                            <div class="p-3">
+                                <h4 class="text-xs text-gray-400 uppercase tracking-wide mb-2">Popular Searches</h4>
+                                <ul class="space-y-1">
+                                    <li><a href="#" class="block text-sm text-gray-300 hover:text-white py-1">Mumbai streetwear</a></li>
+                                    <li><a href="#" class="block text-sm text-gray-300 hover:text-white py-1">Oversized hoodies</a></li>
+                                    <li><a href="#" class="block text-sm text-gray-300 hover:text-white py-1">Neon collection</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'purchase_clothes_skatezo' %}" class="inline-block">
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-1.5 px-3 rounded-full shadow-sm text-sm transition duration-300">
+                                Shop Now
+                            </button>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="inline-block">
+                            <button class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-1.5 px-3 rounded-full shadow-sm text-sm transition duration-300">
+                               Login
+                            </button>
+                        </a>
+                    {% endif %}
+
+
+
+                    <!-- Icons with enhanced effects -->
+                    <button class="text-gray-300 hover:text-white transition-colors hover:scale-110 transform duration-200">
+                        <i class="far fa-heart text-lg"></i>
+                        <span class="sr-only">Wishlist</span>
+                    </button>
+                    
+                    <button class="text-gray-300 hover:text-white transition-colors hover:scale-110 transform duration-200 relative">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-blue-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                        <span class="sr-only">Shopping bag</span>
+                    </button>
+                    
+                    <button class="text-gray-300 hover:text-white transition-colors hover:scale-110 transform duration-200">
+                        <i class="far fa-user text-lg"></i>
+                        <span class="sr-only">Account</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button class="lg:hidden text-gray-300 hover:text-white" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed top-0 left-0 w-full h-full bg-gray-900 z-40 lg:hidden">
+        <div class="flex justify-between items-center p-4 border-b border-gray-700">
+            <h2 class="text-xl font-bold text-gradient">SKATEZO</h2>
+            <button onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-4 space-y-4">
+            <a href="#" class="block text-gray-300 hover:text-white py-2 border-b border-gray-700">New</a>
+            <a href="#" class="block text-gray-300 hover:text-white py-2 border-b border-gray-700">Women's</a>
+            <a href="#" class="block text-gray-300 hover:text-white py-2 border-b border-gray-700">Men's</a>
+            <a href="#" class="block text-gray-300 hover:text-white py-2 border-b border-gray-700">Streetwear</a>
+            <a href="#" class="block text-gray-300 hover:text-white py-2 border-b border-gray-700">Accessories</a>
+            <a href="#" class="block text-orange-400 hover:text-orange-300 py-2 font-semibold">Sale</a>
+        </div>
+    </div>
+
+
+<!--==================================  HERO SECTION STARTS ==================== ================================================================================================================-->
+<!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Cart Counter -->
+   
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+    
+
+    <!-- Hero Section -->
+    <div class="relative h-96 hero-gradient overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 h-full flex items-center">
+            <div class="text-center w-full hero-content">
+                <div class="inline-block pulse-badge rounded-full px-4 py-2 mb-6">
+                    <span class="text-white text-sm font-medium">🔥 New Styles Added!</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 glow-text">
+                    Skatezo Dorm<br>
+                    <span class="text-6xl md:text-8xl">40% Off</span>
+                </h1>
+                <p class="text-xl mb-8 opacity-90">Select Streetwear, Urban & More</p>
+                
+                <!-- Countdown Timer -->
+                <div class="countdown-timer">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+
+                <br><br>
+
+                <button class="cta-button px-8 py-3 rounded-full font-semibold uppercase tracking-wide" onclick="showLoading()">
+                    Shop Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Limited Time Offers -->
+    <div class="grid md:grid-cols-2 gap-4 max-w-7xl mx-auto px-4 -mt-16 relative z-10">
+        <div class="glassmorphism rounded-2xl p-8 text-center category-hover">
+            <span class="text-sm text-gray-400 uppercase tracking-wider">Limited Time Only</span>
+            <h3 class="text-3xl font-bold mt-2 mb-4">15% Off Streetwear</h3>
+            <div class="deal-progress">
+                <div class="progress-fill" style="--progress-width: 75%;"></div>
+            </div>
+            <div class="deal-text">25 items left at this price!</div>
+            <button class="bg-white/20 hover:bg-white/30 px-6 py-2 rounded-full transition-colors uppercase text-sm tracking-wide">
+                Shop Streetwear
+            </button>
+        </div>
+        <div class="glassmorphism rounded-2xl p-8 text-center category-hover">
+            <span class="text-sm text-gray-400 uppercase tracking-wider">Limited Time Only</span>
+            <h3 class="text-3xl font-bold mt-2 mb-4">15% Off Art Prints</h3>
+            <div class="deal-progress">
+                <div class="progress-fill" style="--progress-width: 45%;"></div>
+            </div>
+            <div class="deal-text">12 items left at this price!</div>
+            <button class="bg-white/20 hover:bg-white/30 px-6 py-2 rounded-full transition-colors uppercase text-sm tracking-wide">
+                Shop Prints
+            </button>
+        </div>
+    </div>
+
+    <!-- Category Grid -->
+    <div class="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 mt-16">
+        <!-- Women's Category -->
+        <div class="relative h-96 rounded-2xl overflow-hidden category-hover">
+            <img 
+                src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&h=600&fit=crop&crop=faces" 
+                alt="Women's Fashion" 
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6">
+                <h3 class="text-3xl font-bold mb-2">Women's</h3>
+                <button class="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors">
+                    Shop Women's
+                </button>
+            </div>
+        </div>
+
+        <!-- Men's Category -->
+        <div class="relative h-96 rounded-2xl overflow-hidden category-hover">
+            <img 
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=600&fit=crop&crop=faces" 
+                alt="Men's Fashion" 
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6">
+                <h3 class="text-3xl font-bold mb-2">Men's</h3>
+                <button class="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors">
+                    Shop Men's
+                </button>
+            </div>
+        </div>
+
+        <!-- Home Category -->
+        <div class="relative h-96 rounded-2xl overflow-hidden category-hover">
+            <img 
+                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=600&fit=crop" 
+                alt="Home Decor" 
+                class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6">
+                <h3 class="text-3xl font-bold mb-2">Home</h3>
+                <button class="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors">
+                    Shop Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Products -->
+    <section class="max-w-7xl mx-auto px-4 mt-20">
+        <h2 class="text-4xl font-bold text-center mb-12">Featured Products</h2>
         
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
+        <!-- Search Bar -->
+        <div class="search-containerr">
+            <input type="text" class="search-inputt" placeholder="Search products..." id="searchInputt" oninput="searchProducts()">
+            <button class="search-btnn">🔍</button>
+        </div>
         
-        setInterval(nextSlide, 4000);
-        
-        // Show notification after 3 seconds
-        setTimeout(() => {
-            document.getElementById('notification').classList.add('show');
-        }, 3000);
-        
-        // Hide notification after 12 seconds
-        setTimeout(() => {
-            document.getElementById('notification').classList.remove('show');
-        }, 12000);
-        
-        function hideNotification() {
-            document.getElementById('notification').classList.remove('show');
-        }
-        
-        // Progress bar animation
-        setTimeout(() => {
-            const progressBar = document.querySelector('.progress-bar');
-            progressBar.style.width = '15%';
-        }, 1500);
-        
-        // Add interactive hover effects
-        document.querySelectorAll('.glass-effect').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                el.style.transform = 'translateY(-5px)';
-                el.style.transition = 'transform 0.3s ease';
-            });
+        <!-- Filter Buttons -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+            <button class="filter-btn" onclick="filterProducts('streetwear')">Streetwear</button>
+            <button class="filter-btn" onclick="filterProducts('footwear')">Footwear</button>
+            <button class="filter-btn" onclick="filterProducts('casual')">Casual</button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="productsGrid">
+            <div class="product-card bg-gray-800/50 rounded-2xl overflow-hidden" data-category="streetwear" data-name="Mumbai Streetwear Hoodie">
+                <div class="sale-badge">Sale</div>
+                <button class="wishlist-btn" onclick="toggleWishlist(this)">
+                    <span class="heart">♡</span>
+                </button>
+                <div class="social-share">
+                    <button class="social-btn facebook" onclick="shareProduct('facebook', 'Mumbai Streetwear Hoodie')">f</button>
+                    <button class="social-btn twitter" onclick="shareProduct('twitter', 'Mumbai Streetwear Hoodie')">t</button>
+                    <button class="social-btn instagram" onclick="shareProduct('instagram', 'Mumbai Streetwear Hoodie')">📷</button>
+                </div>
+                <img 
+                    src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=300&h=400&fit=crop" 
+                    alt="Streetwear Hoodie" 
+                    class="w-full h-48 object-cover"
+                >
+                <div class="product-info-popup">
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <div class="size-options">
+                        <button class="size-btn" onclick="selectSize(this)">S</button>
+                        <button class="size-btn" onclick="selectSize(this)">M</button>
+                        <button class="size-btn" onclick="selectSize(this)">L</button>
+                        <button class="size-btn" onclick="selectSize(this)">XL</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Mumbai Streetwear Hoodie', 2999)">Add to Cart</button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">Mumbai Streetwear Hoodie</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-2">Urban Collection</p>
+                    <div class="price-comparison">
+                        <p class="price-tag text-lg">₹2,999</p>
+                        <p class="original-price">₹3,999</p>
+                        <span class="discount-badge">25% OFF</span>
+                    </div>
+                </div>
+            </div>
             
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = 'translateY(0)';
+            <div class="product-card bg-gray-800/50 rounded-2xl overflow-hidden" data-category="casual" data-name="Vintage Denim Jacket">
+                <button class="wishlist-btn" onclick="toggleWishlist(this)">
+                    <span class="heart">♡</span>
+                </button>
+                <div class="social-share">
+                    <button class="social-btn facebook" onclick="shareProduct('facebook', 'Vintage Denim Jacket')">f</button>
+                    <button class="social-btn twitter" onclick="shareProduct('twitter', 'Vintage Denim Jacket')">t</button>
+                    <button class="social-btn instagram" onclick="shareProduct('instagram', 'Vintage Denim Jacket')">📷</button>
+                </div>
+                <img 
+                    src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=400&fit=crop" 
+                    alt="Denim Jacket" 
+                    class="w-full h-48 object-cover"
+                >
+                <div class="product-info-popup">
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <div class="size-options">
+                        <button class="size-btn" onclick="selectSize(this)">S</button>
+                        <button class="size-btn" onclick="selectSize(this)">M</button>
+                        <button class="size-btn" onclick="selectSize(this)">L</button>
+                        <button class="size-btn" onclick="selectSize(this)">XL</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Vintage Denim Jacket', 3499)">Add to Cart</button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">Vintage Denim Jacket</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-2">Vintage Collection</p>
+                    <p class="price-tag text-lg">₹3,499</p>
+                </div>
+            </div>
+            
+            <div class="product-card bg-gray-800/50 rounded-2xl overflow-hidden" data-category="footwear" data-name="Street Sneakers">
+                <div class="sale-badge">30% Off</div>
+                <button class="wishlist-btn" onclick="toggleWishlist(this)">
+                    <span class="heart">♡</span>
+                </button>
+                <div class="social-share">
+                    <button class="social-btn facebook" onclick="shareProduct('facebook', 'Street Sneakers')">f</button>
+                    <button class="social-btn twitter" onclick="shareProduct('twitter', 'Street Sneakers')">t</button>
+                    <button class="social-btn instagram" onclick="shareProduct('instagram', 'Street Sneakers')">📷</button>
+                </div>
+                <img 
+                    src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=300&h=400&fit=crop" 
+                    alt="Sneakers" 
+                    class="w-full h-48 object-cover"
+                >
+                <div class="product-info-popup">
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <div class="size-options">
+                        <button class="size-btn" onclick="selectSize(this)">7</button>
+                        <button class="size-btn" onclick="selectSize(this)">8</button>
+                        <button class="size-btn" onclick="selectSize(this)">9</button>
+                        <button class="size-btn" onclick="selectSize(this)">10</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Street Sneakers', 4999)">Add to Cart</button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">Street Sneakers</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-2">Footwear</p>
+                    <div class="price-comparison">
+                        <p class="price-tag text-lg">₹4,999</p>
+                        <p class="original-price">₹6,999</p>
+                        <span class="discount-badge">30% OFF</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card bg-gray-800/50 rounded-2xl overflow-hidden" data-category="casual" data-name="Graphic Tee">
+                <button class="wishlist-btn" onclick="toggleWishlist(this)">
+                    <span class="heart">♡</span>
+                </button>
+                <div class="social-share">
+                    <button class="social-btn facebook" onclick="shareProduct('facebook', 'Graphic Tee')">f</button>
+                    <button class="social-btn twitter" onclick="shareProduct('twitter', 'Graphic Tee')">t</button>
+                    <button class="social-btn instagram" onclick="shareProduct('instagram', 'Graphic Tee')">📷</button>
+                </div>
+                <img 
+                    src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=400&fit=crop" 
+                    alt="T-Shirt" 
+                    class="w-full h-48 object-cover"
+                >
+                <div class="product-info-popup">
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <div class="size-options">
+                        <button class="size-btn" onclick="selectSize(this)">S</button>
+                        <button class="size-btn" onclick="selectSize(this)">M</button>
+                        <button class="size-btn" onclick="selectSize(this)">L</button>
+                        <button class="size-btn" onclick="selectSize(this)">XL</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart('Graphic Tee', 1299)">Add to Cart</button>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">Graphic Tee</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-2">Casual Wear</p>
+                    <p class="price-tag text-lg">₹1,299</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="scrollToTop()" title="Back to Top">
+        ↑
+    </button>
+                
+              
+        </div>
+    </section>
+
+<!--============================ NEWSLETTER=====================================================================================================================================================================  -->
+    <!-- Newsletter -->
+    <section class="max-w-7xl mx-auto px-4 mt-20">
+        <div class="glassmorphism rounded-3xl p-12 text-center">
+            <h2 class="text-4xl font-bold mb-4">Stay in the Loop</h2>
+            <p class="text-gray-400 mb-8">Get exclusive access to new drops, sales, and Mumbai streetwear culture</p>
+            <div class="flex max-w-md mx-auto">
+                <input 
+                    type="email" 
+                    placeholder="Enter your email" 
+                    class="flex-1 bg-gray-700/50 border border-gray-600 rounded-l-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                <button class="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-3 rounded-r-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 mt-20 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-skating text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gradient">SKATEZO</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Mumbai's premier destination for streetwear, vintage fashion, and urban lifestyle.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Shop</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Women's</a></li>
+                        <li><a href="#" class="hover:text-white">Men's</a></li>
+                        <li><a href="#" class="hover:text-white">Streetwear</a></li>
+                        <li><a href="#" class="hover:text-white">Accessories</a></li>
+                        <li><a href="#" class="hover:text-white">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white">Size Guide</a></li>
+                        <li><a href="#" class="hover:text-white">Shipping</a></li>
+                        <li><a href="#" class="hover:text-white">Returns</a></li>
+                        <li><a href="#" class="hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Mumbai Store</h4>
+                    <p class="text-gray-400 mb-2">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        Bandra West, Mumbai 400050
+                    </p>
+                    <p class="text-gray-400 mb-2">
+                        <i class="fas fa-phone mr-2"></i>
+                        +91 98765 43210
+                    </p>
+                    <p class="text-gray-400">
+                        <i class="fas fa-envelope mr-2"></i>
+                        hello@skatezo.com
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Skatezo. All rights reserved. Mumbai's streetwear revolution.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('scroll-fade');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.product-card, .category-hover').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mobile menu toggle (if needed)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.querySelector('input[type="text"]');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim();
+                    if (searchTerm) {
+                        // Here you would typically redirect to search results
+                        console.log('Searching for:', searchTerm);
+                    }
+                }
+            });
+        }
+
+        // Add to cart functionality (placeholder)
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Add subtle interaction feedback
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
             });
         });
     </script>

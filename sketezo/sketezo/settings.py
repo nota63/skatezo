@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kr*q^n7m_t%uk2j6oe=qv181!bg^d-#j_c5pk=!u3_=bx)i-lm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'skatezo.onrender.com',
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dev_mode',
+    'product',
+    'accounts',
 ]
 
 MIDDLEWARE = [
