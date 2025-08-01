@@ -44,8 +44,8 @@ def register_view(request):
                 username=username,
                 email=email,
                 password=password,
-                first_name=first_name,
-                last_name=last_name
+                first_name=first_name if first_name else None,
+                last_name=last_name if last_name else None
             )
             messages.success(request, 'Account created successfully! Please login.')
             return redirect('login')
