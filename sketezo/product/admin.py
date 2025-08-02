@@ -123,11 +123,11 @@ class CategoryAdmin(admin.ModelAdmin):
     def product_count(self, obj):
         """Display number of products in this category"""
         count = obj.products.count()
-        if count > 0:
-            url = reverse('admin:your_app_product_changelist') + f'?category__id__exact={obj.id}'
-            return format_html('<a href="{}">{} products</a>', url, count)
-        return count
-    product_count.short_description = 'Products'
+    #     if count > 0:
+    #         url = reverse('admin:your_app_product_changelist') + f'?category__id__exact={obj.id}'
+    #         return format_html('<a href="{}">{} products</a>', url, count)
+    #     return count
+    # product_count.short_description = 'Products'
 
 
 @admin.register(Brand)
@@ -161,11 +161,11 @@ class BrandAdmin(admin.ModelAdmin):
     
     def product_count(self, obj):
         count = obj.products.count()
-        if count > 0:
-            url = reverse('admin:your_app_product_changelist') + f'?brand__id__exact={obj.id}'
-            return format_html('<a href="{}">{} products</a>', url, count)
-        return count
-    product_count.short_description = 'Products'
+        # if count > 0:
+            # url = reverse('admin:your_app_product_changelist') + f'?brand__id__exact={obj.id}'
+            # return format_html('<a href="{}">{} products</a>', url, count)
+        # return count
+    # product_count.short_description = 'Products'
 
 
 @admin.register(Color)
