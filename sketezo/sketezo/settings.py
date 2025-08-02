@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'dev_mode',
     'product',
     'accounts',
+    'components',
 ]
 
 MIDDLEWARE = [

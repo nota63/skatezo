@@ -27,6 +27,7 @@ urlpatterns = [
     path('dev_mode/',include('dev_mode.urls')),
     path('accounts/',include('accounts.urls')),
     path('product/',include('product.urls')),
+    path('components/',include('components.urls')),
 ]
 
 if settings.DEBUG:
