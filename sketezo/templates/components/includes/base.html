@@ -1,0 +1,40 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My E-commerce{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- Include header -->
+    {% include "includes/header.html" %}
+
+    <!-- Main content area -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Include footer -->
+    {% include "includes/footer.html" %}
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
+
+
+
+<!-- Usage example -->
+ <!-- home.html -->
+<!-- {% extends "base.html" %}
+
+{% block title %}Home | Vishal Store{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Stakezo  Store 💖</h1>
+    Your content here
+ {% endblock %} --> 
